@@ -1,58 +1,70 @@
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import bcrypt from 'bcryptjs';
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    // Validate input
     if (!email || !password) {
       return NextResponse.json(
-        { error: 'Missing email or password' },
+        { error: "Email and password are required" },
         { status: 400 }
       );
     }
 
-    // Get user
-    const user = await db.getUserByEmail(email);
+    // Find user
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
     if (!user) {
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { error: "Invalid credentials" },
         { status: 401 }
       );
     }
 
     // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
     if (!isValidPassword) {
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { error: "Invalid credentials" },
         { status: 401 }
       );
     }
 
-    // Update last login
-    await db.updateLastLogin(user.id);
+    // Create session
+    const session = await prisma.session.create({
+      data: {
+        userId: user.id,
+        sessionToken: generateSessionToken(),
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      },
+    });
 
-    // Update study streak
-    await db.updateStudyStreak(user.id);
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user;
 
     return NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        avatarUrl: user.avatar_url,
-        subscriptionTier: user.subscription_tier
-      }
+      user: userWithoutPassword,
+      sessionToken: session.sessionToken,
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error("Login error:", error);
     return NextResponse.json(
-      { error: 'Failed to login' },
+      { error: "Failed to login" },
       { status: 500 }
     );
   }
+}
+
+function generateSessionToken(): string {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15) +
+    Date.now().toString(36)
+  );
 }

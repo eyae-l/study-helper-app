@@ -40,16 +40,16 @@ export default function SummarizerPanel() {
 
     setIsLoading(true);
     try {
-      // Import the API function
-      const { generateSummary } = await import("@/lib/api");
+      // Import the API client
+      const { ApiClient } = await import("@/lib/api-client");
       
-      // Get real AI-generated summary
-      const aiSummary = await generateSummary(
+      // Get real AI-generated summary using Gemini
+      const result = await ApiClient.generateSummary(
         inputText, 
         selectedLength as "short" | "medium" | "long"
       );
       
-      setSummary(aiSummary);
+      setSummary(result.summary);
     } catch (error) {
       console.error("Error generating summary:", error);
       

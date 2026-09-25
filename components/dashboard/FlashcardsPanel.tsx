@@ -41,7 +41,12 @@ type ViewMode = "create" | "study" | "complete";
 type Difficulty = "easy" | "medium" | "hard";
 type UploadMethod = "file" | "text" | "youtube" | "audio" | null;
 
-export default function FlashcardsPanel() {
+interface FlashcardsPanelProps {
+  studySetId: string;
+  userId: string;
+}
+
+export default function FlashcardsPanel({ studySetId, userId }: FlashcardsPanelProps) {
   // State
   const [viewMode, setViewMode] = useState<ViewMode>("create");
   const [uploadMethod, setUploadMethod] = useState<UploadMethod>(null);
@@ -61,6 +66,43 @@ export default function FlashcardsPanel() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [sessionResults, setSessionResults] = useState<CardResult[]>([]);
   const [currentSession, setCurrentSession] = useState<StudySession | null>(null);
+
+  // Load existing flashcards from database
+  useEffect(() => {
+    const loadFlashcards = async () => {
+      try {
+        const { ApiClient } = await import("@/lib/api-client");
+        const flashcards = await ApiClient.getFlashcards(studySetId, userId);
+        
+        if (flashcards.length > 0) {
+          // Convert to frontend format
+          const cards: Flashcard[] = flashcards.map((card: any, index: number) => ({
+            id: card.id,
+            question: card.front,
+            answer: card.back,
+            position: index,
+          }));
+
+          const deck: FlashcardDeck = {
+            id: studySetId,
+            userId,
+            title: "Your Flashcards",
+            sourceMaterial: "",
+            cards,
+            createdAt: flashcards[0].createdAt,
+            updatedAt: flashcards[0].updatedAt,
+          };
+
+          setCurrentDeck(deck);
+          console.log(`Loaded ${flashcards.length} flashcards from database`);
+        }
+      } catch (error) {
+        console.error("Failed to load flashcards:", error);
+      }
+    };
+
+    loadFlashcards();
+  }, [studySetId, userId]);
 
   // Load existing decks from localStorage
   useEffect(() => {
@@ -103,7 +145,7 @@ export default function FlashcardsPanel() {
   };
 
   // Card count selection
-  const cardCounts = [10, 15, 20, 30, 50];
+  const cardCounts: number[] = [10, 15, 20, 30, 50];
   const selectedCount =
     numCards === -1 ? parseInt(customCardCount) || 10 : numCards;
 
@@ -123,44 +165,33 @@ export default function FlashcardsPanel() {
     setLoadingMessage("Analyzing your notes...");
 
     try {
-      // Import the API function
-      const { generateFlashcards: generateFlashcardsAPI } = await import("@/lib/api");
+      // Import the API client
+      const { ApiClient } = await import("@/lib/api-client");
       
       setLoadingMessage("Creating your flashcards...");
       
-      // Get real AI-generated flashcards
-      const aiResponse = await generateFlashcardsAPI(inputText, selectedCount);
+      // Call backend API to generate and save flashcards
+      const response = await ApiClient.generateFlashcards({
+        content: inputText,
+        count: selectedCount,
+        studySetId,
+        userId,
+      });
       
       setLoadingMessage("Building your deck...");
       
-      // Parse the AI response
-      let cards: Flashcard[] = [];
-      try {
-        const parsed = JSON.parse(aiResponse);
-        cards = parsed.map((item: any, i: number) => ({
-          id: `card-${Date.now()}-${i}`,
-          question: item.question || `Question ${i + 1}?`,
-          answer: item.answer || `Answer ${i + 1}`,
-          position: i,
-        }));
-      } catch (parseError) {
-        console.error("Failed to parse flashcards:", parseError);
-        // Fallback to extracting topics
-        const topics = extractTopics(inputText, selectedCount);
-        for (let i = 0; i < selectedCount; i++) {
-          cards.push({
-            id: `card-${Date.now()}-${i}`,
-            question: topics[i]?.question || `Question ${i + 1} based on your notes?`,
-            answer: topics[i]?.answer || `Answer explaining the concept from your study material.`,
-            position: i,
-          });
-        }
-      }
+      // Convert to frontend format
+      const cards: Flashcard[] = response.flashcards.map((card: any, index: number) => ({
+        id: card.id,
+        question: card.front,
+        answer: card.back,
+        position: index,
+      }));
 
       // Create deck
       const deck: FlashcardDeck = {
-        id: `deck-${Date.now()}`,
-        userId: "user-1", // In real app, get from auth
+        id: studySetId,
+        userId,
         title: generateDeckTitle(inputText),
         sourceMaterial: inputText,
         cards,
@@ -620,7 +651,7 @@ function CreateWorkspace({
           </label>
 
           <div className="grid grid-cols-6 gap-3 mb-4">
-            {cardCounts.map((count) => (
+            {cardCounts.map((count: number) => (
               <button
                 key={count}
                 onClick={() => setNumCards(count)}

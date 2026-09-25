@@ -173,7 +173,7 @@ export default function PaperGraderPanel() {
     
     const lines = aiResponse.split('\n');
     let totalScore = 0;
-    const criteria: GradeCriterion[] = [];
+    const criteria: GradingCriteria[] = [];
     
     // Try to extract numeric scores
     const scoreMatches = aiResponse.match(/\d+\/10/g);
@@ -213,7 +213,13 @@ export default function PaperGraderPanel() {
       maxScore: 60,
       grade: getLetterGrade(percentage),
       overallFeedback: aiResponse,
-      criteria: criteria
+      criteria: criteria,
+      strengths: [],
+      improvements: [],
+      missingItems: [],
+      rubric: "AI Generated",
+      insights: [],
+      source: "AI Analysis"
     };
   };
 
@@ -351,7 +357,8 @@ export default function PaperGraderPanel() {
         "While the sections follow a somewhat logical progression from definition to classification of industries, products, and capability, it lacks the structure of a developed academic essay.",
         "There is no introduction with a thesis, no body paragraphs with topic sentences and conclusion, and no conclusion or synthesis.",
         "The content is predominantly in bullet points and sentence fragments, hindering smooth, raw and mathematical."
-      ]
+      ],
+      source: "Manual Analysis"
     };
   };
 

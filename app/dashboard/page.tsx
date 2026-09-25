@@ -15,9 +15,36 @@ import ProgressPanel from "@/components/dashboard/ProgressPanel";
 import SolveAIPanel from "@/components/dashboard/SolveAIPanel";
 import MindMapPanel from "@/components/dashboard/MindMapPanel";
 import PaperGraderPanel from "@/components/dashboard/PaperGraderPanel";
+import { initializeDemoStudySet } from "@/lib/init-demo-data";
+import { getDemoUserId } from "@/lib/demo-user";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [studySetId, setStudySetId] = useState<string | null>(null);
+  const [userId] = useState(getDemoUserId());
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize demo data on mount
+  useEffect(() => {
+    const initData = async () => {
+      try {
+        console.log('Initializing demo data...');
+        const studySet = await initializeDemoStudySet();
+        if (studySet) {
+          console.log('Study set initialized:', studySet.id);
+          setStudySetId(studySet.id);
+        } else {
+          console.error('Failed to initialize study set');
+        }
+        setIsInitialized(true);
+      } catch (error) {
+        console.error("Failed to initialize demo data:", error);
+        setIsInitialized(true);
+      }
+    };
+
+    initData();
+  }, []);
 
   // Listen for tool navigation events from dashboard cards
   useEffect(() => {
@@ -32,6 +59,17 @@ export default function DashboardPage() {
     };
   }, []);
 
+  if (!isInitialized) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#0a0b1e]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen bg-[#0a0b1e]">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -40,8 +78,8 @@ export default function DashboardPage() {
         {activeTab === "study-beats" && <StudyBeatsPanel />}
         {activeTab === "summarizer" && <SummarizerPanel />}
         {activeTab === "smart-notes" && <SmartNotesPanel />}
-        {activeTab === "quizzes" && <QuizzesPanel />}
-        {activeTab === "flashcards" && <FlashcardsPanel />}
+        {activeTab === "quizzes" && studySetId && <QuizzesPanel studySetId={studySetId} userId={userId} />}
+        {activeTab === "flashcards" && studySetId && <FlashcardsPanel studySetId={studySetId} userId={userId} />}
         {activeTab === "solve-ai" && <SolveAIPanel />}
         {activeTab === "mind-map" && <MindMapPanel />}
         {activeTab === "paper-grader" && <PaperGraderPanel />}

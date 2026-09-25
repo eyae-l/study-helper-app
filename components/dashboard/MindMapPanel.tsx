@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface MindMapNode {
   id: string;
@@ -54,16 +54,16 @@ export default function MindMapPanel() {
     setIsGenerating(true);
 
     try {
-      // Import the API function
-      const { generateMindMap: generateMindMapAPI } = await import("@/lib/api");
+      // Import the API client
+      const { ApiClient } = await import("@/lib/api-client");
       
-      // Get real AI-generated mind map structure
-      const aiResponse = await generateMindMapAPI(inputText);
+      // Get real AI-generated mind map structure using Gemini
+      const result = await ApiClient.generateMindMap(inputText);
       
       // Parse the AI response
       let rootNode: MindMapNode;
       try {
-        const parsed = JSON.parse(aiResponse);
+        const parsed = result.mindMap;
         
         // Convert AI structure to our format
         const convertToMindMapNode = (data: any, level: number = 0): MindMapNode => {
@@ -201,11 +201,13 @@ export default function MindMapPanel() {
     index: number,
     totalSiblings: number
   ): void => {
+    let angleOffset = 0;
+    
     if (node.level === 0) {
       node.x = parentX;
       node.y = parentY;
     } else {
-      const angleOffset = (index - totalSiblings / 2) * (Math.PI / (totalSiblings + 1));
+      angleOffset = (index - totalSiblings / 2) * (Math.PI / (totalSiblings + 1));
       node.x = parentX + Math.cos(angle + angleOffset) * radius;
       node.y = parentY + Math.sin(angle + angleOffset) * radius;
     }
@@ -226,8 +228,8 @@ export default function MindMapPanel() {
   };
 
   // Render mind map recursively
-  const renderNode = (node: MindMapNode, parentNode?: MindMapNode): JSX.Element[] => {
-    const elements: JSX.Element[] = [];
+  const renderNode = (node: MindMapNode, parentNode?: MindMapNode): React.ReactElement[] => {
+    const elements: React.ReactElement[] = [];
 
     // Calculate positions
     if (node.level === 0 && currentMindMap) {

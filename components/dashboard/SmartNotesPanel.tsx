@@ -26,13 +26,13 @@ export default function SmartNotesPanel() {
 
     setIsLoading(true);
     try {
-      // Import the API function
-      const { generateSmartNotes } = await import("@/lib/api");
+      // Import the API client
+      const { ApiClient } = await import("@/lib/api-client");
       
-      // Get real AI-generated notes
-      const aiNotes = await generateSmartNotes(inputText);
+      // Get real AI-generated notes using Gemini
+      const result = await ApiClient.generateSmartNotes(inputText);
       
-      setNotes(aiNotes);
+      setNotes(result.notes);
     } catch (error) {
       console.error("Error generating notes:", error);
       

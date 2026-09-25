@@ -178,16 +178,16 @@ export default function SolveAIPanel() {
     setIsTyping(true);
 
     try {
-      // Import the API function dynamically to avoid server-side issues
-      const { solveProblem } = await import("@/lib/api");
+      // Import the API client dynamically to avoid server-side issues
+      const { ApiClient } = await import("@/lib/api-client");
       
-      // Get real AI response
-      const aiResponse = await solveProblem(currentInput, currentSession?.subject || "General");
+      // Get real AI response using Gemini
+      const result = await ApiClient.solveProblem(currentInput, currentSession?.subject || "General");
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: aiResponse,
+        content: result.solution,
         timestamp: Date.now(),
       };
 

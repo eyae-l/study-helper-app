@@ -5,7 +5,12 @@ import { useState } from "react";
 type Difficulty = "easy" | "medium" | "hard";
 type QuestionType = "multiple-choice" | "fill-blanks";
 
-export default function QuizzesPanel() {
+interface QuizzesPanelProps {
+  studySetId: string;
+  userId: string;
+}
+
+export default function QuizzesPanel({ studySetId, userId }: QuizzesPanelProps) {
   const [inputText, setInputText] = useState("");
   const [quiz, setQuiz] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -21,15 +26,22 @@ export default function QuizzesPanel() {
 
     setIsLoading(true);
     try {
-      // Import the API function
-      const { generateQuiz } = await import("@/lib/api");
+      // Import the API client
+      const { ApiClient } = await import("@/lib/api-client");
       
-      // Get real AI-generated quiz
-      const aiQuiz = await generateQuiz(inputText, difficulty, numQuestions);
+      // Generate quiz using backend API (which uses Gemini)
+      const result = await ApiClient.generateQuiz({
+        content: inputText,
+        title: `${difficulty} Quiz`,
+        difficulty,
+        count: numQuestions,
+        studySetId,
+        userId,
+      });
       
       // Parse and format the quiz
       try {
-        const quizData = JSON.parse(aiQuiz);
+        const quizData = result.questions || JSON.parse(result.questions);
         let formattedQuiz = `Generated Quiz (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Difficulty - ${questionType === "multiple-choice" ? "Multiple Choice" : "Fill in the Blanks"})\n\n`;
         
         if (questionType === "multiple-choice") {
