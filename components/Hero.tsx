@@ -34,14 +34,17 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <button className="px-8 py-4 bg-[#1a3329] text-[#5eead4] text-lg font-semibold rounded-xl hover:bg-[#234d3a] border border-[#2d4a3d] hover:border-[#5eead4]/30 transition-all group">
+          <a 
+            href="/dashboard"
+            className="px-8 py-4 bg-[#1a3329] text-[#5eead4] text-lg font-semibold rounded-xl hover:bg-[#234d3a] border border-[#2d4a3d] hover:border-[#5eead4]/30 transition-all group"
+          >
             <span className="flex items-center gap-2">
               Start Learning Free
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </span>
-          </button>
+          </a>
           <button className="px-8 py-4 bg-transparent text-gray-300 text-lg font-semibold rounded-xl border border-[#2d4a3d] hover:border-[#5eead4]/30 hover:text-white transition-all group">
             <span className="flex items-center gap-2">
               <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

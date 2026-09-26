@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import FileUploadButton from "../FileUploadButton";
+import PasteButton from "../PasteButton";
 
 // Types
 interface Flashcard {
@@ -253,22 +255,14 @@ export default function FlashcardsPanel({ studySetId, userId }: FlashcardsPanelP
   };
 
   // File upload handler
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleFileUpload = (content: string, fileName: string) => {
+    setInputText(content);
+    setUploadedFileName(fileName);
+  };
 
-    if (!file.name.match(/\.(txt|md|doc|docx)$/i)) {
-      alert("We couldn't process this file. Try a text file (.txt, .md).");
-      return;
-    }
-
-    setUploadedFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = event.target?.result as string;
-      setInputText(content);
-    };
-    reader.readAsText(file);
+  // Error handler for file upload
+  const handleFileError = (error: string) => {
+    alert(error);
   };
 
   // Study interaction handlers
@@ -377,6 +371,7 @@ export default function FlashcardsPanel({ studySetId, userId }: FlashcardsPanelP
           audioFileName={audioFileName}
           setAudioFileName={setAudioFileName}
           handleFileUpload={handleFileUpload}
+          handleFileError={handleFileError}
           numCards={numCards}
           setNumCards={setNumCards}
           customCardCount={customCardCount}
@@ -428,6 +423,7 @@ function CreateWorkspace({
   audioFileName,
   setAudioFileName,
   handleFileUpload,
+  handleFileError,
   numCards,
   setNumCards,
   customCardCount,
@@ -518,26 +514,14 @@ function CreateWorkspace({
             <p className="text-green-200/70 text-sm mb-3">Or upload from:</p>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {/* Upload File */}
-              <label className="bg-black hover:bg-green-500/10 border border-green-500/30 hover:border-blue-500/50 rounded-lg p-3 cursor-pointer transition-all group">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-green-500/20 group-hover:bg-green-500/30 rounded-lg flex items-center justify-center transition-colors">
-                    <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-white text-sm font-medium">Upload file</p>
-                    <p className="text-gray-500 text-xs">PDF, DOCX, TXT</p>
-                  </div>
-                </div>
-                <input
-                  type="file"
-                  accept=".txt,.md,.doc,.docx,.pdf"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-              </label>
+              {/* Upload File - Using new component */}
+              <FileUploadButton
+                onFileContent={handleFileUpload}
+                onError={handleFileError}
+                variant="card"
+                label="Upload file"
+                description="TXT, MD, PDF, DOCX"
+              />
 
               {/* YouTube Link */}
               <button
@@ -580,32 +564,14 @@ function CreateWorkspace({
                 />
               </label>
 
-              {/* Paste from Clipboard */}
-              <button
-                onClick={async () => {
-                  try {
-                    const text = await navigator.clipboard.readText();
-                    if (text) {
-                      setInputText(text);
-                    }
-                  } catch (err) {
-                    alert("Please paste directly into the text area above, or grant clipboard permissions.");
-                  }
-                }}
-                className="bg-black hover:bg-green-600/10 border border-green-500/30 hover:border-green-500/50 rounded-lg p-3 transition-all group"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-green-600/20 group-hover:bg-green-600/30 rounded-lg flex items-center justify-center transition-colors">
-                    <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                  </div>
-                  <div className="flex-1 text-left">
-                    <p className="text-white text-sm font-medium">Clipboard</p>
-                    <p className="text-gray-500 text-xs">Paste text</p>
-                  </div>
-                </div>
-              </button>
+              {/* Paste from Clipboard - Using new component */}
+              <PasteButton
+                onPaste={(content) => setInputText(content)}
+                onError={handleFileError}
+                variant="card"
+                label="Clipboard"
+                description="Paste text"
+              />
             </div>
 
             {/* YouTube URL Input (Expandable) */}

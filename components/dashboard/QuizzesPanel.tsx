@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import FileUploadButton from "../FileUploadButton";
+import PasteButton from "../PasteButton";
 
 type Difficulty = "easy" | "medium" | "hard";
 type QuestionType = "multiple-choice" | "fill-blanks";
@@ -17,6 +19,21 @@ export default function QuizzesPanel({ studySetId, userId }: QuizzesPanelProps) 
   const [numQuestions, setNumQuestions] = useState(5);
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [questionType, setQuestionType] = useState<QuestionType>("multiple-choice");
+  const [uploadedFileName, setUploadedFileName] = useState("");
+
+  const handleFileUpload = (content: string, fileName: string) => {
+    setInputText(content);
+    setUploadedFileName(fileName);
+  };
+
+  const handlePaste = (content: string) => {
+    setInputText(content);
+    setUploadedFileName("");
+  };
+
+  const handleError = (error: string) => {
+    alert(error);
+  };
 
   const handleGenerateQuiz = async () => {
     if (!inputText.trim()) {
@@ -68,8 +85,8 @@ export default function QuizzesPanel({ studySetId, userId }: QuizzesPanelProps) 
         
         setQuiz(formattedQuiz);
       } catch (parseError) {
-        // If parsing fails, use the raw response
-        setQuiz(aiQuiz);
+        // If parsing fails, use the result as-is
+        setQuiz(JSON.stringify(result.questions, null, 2));
       }
     } catch (error) {
       console.error("Error generating quiz:", error);
@@ -127,10 +144,43 @@ Answer: [specific concept]`}
           </label>
           <textarea
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => {
+              setInputText(e.target.value);
+              setUploadedFileName("");
+            }}
             placeholder="Paste or type your text here to generate a quiz..."
             className="w-full h-64 bg-black border border-green-500/30 rounded-lg p-4 text-green-200 placeholder-green-300/50 focus:outline-none focus:border-green-500/60 resize-none mb-4"
           />
+
+          {uploadedFileName && (
+            <div className="mb-4 flex items-center gap-3 bg-black border border-green-500/30 rounded-lg p-3">
+              <span className="text-green-400">📄</span>
+              <span className="text-green-200 text-sm flex-1">{uploadedFileName}</span>
+              <button
+                onClick={() => {
+                  setUploadedFileName("");
+                  setInputText("");
+                }}
+                className="text-green-200/70 hover:text-red-400 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          <div className="flex gap-3 mb-4">
+            <PasteButton
+              onPaste={handlePaste}
+              onError={handleError}
+              label="Paste Text"
+            />
+            <FileUploadButton
+              onFileContent={handleFileUpload}
+              onError={handleError}
+              accept=".txt,.md,.pdf,.doc,.docx"
+              label="Upload File"
+            />
+          </div>
 
           <div className="mb-4">
             <label className="text-white text-sm font-medium mb-2 block">

@@ -120,24 +120,19 @@ export async function generateStudyBeatsLyrics(
   genre: string,
   length: "short" | "medium" | "long" = "medium"
 ): Promise<string> {
-  const lengthMap = {
-    short: "1 minute song (1 verse, 1 chorus)",
-    medium: "2-3 minute song (2 verses, chorus, bridge)",
-    long: "4-5 minute song (full structure with intro, verses, choruses, bridge, outro)",
-  };
+  // Use Gemini API for better results
+  const { generateStudyBeatsLyricsWithGemini } = await import("@/lib/gemini-api");
+  return generateStudyBeatsLyricsWithGemini(content, genre, length);
+}
 
-  const messages: ChatMessage[] = [
-    {
-      role: "system",
-      content: `You are a creative songwriter who transforms educational content into memorable ${genre} song lyrics. Keep the educational content accurate while making it catchy and rhythmic.`,
-    },
-    {
-      role: "user",
-      content: `Transform this study material into ${genre} song lyrics (${lengthMap[length]}):\n\n${content}\n\nInclude:\n- [Verse], [Chorus], [Bridge] sections\n- Educational concepts in memorable rhymes\n- Catchy, rhythmic lines\n- Key facts embedded naturally`,
-    },
-  ];
-
-  return generateAIResponse(messages);
+export async function generateStudyBeatsMusic(
+  lyrics: string,
+  genre: string,
+  length: "short" | "medium" | "long" = "medium"
+): Promise<Blob> {
+  // Use Lyria 3.5 API through Gemini
+  const { generateMusicWithLyria } = await import("@/lib/gemini-api");
+  return generateMusicWithLyria(lyrics, genre, length);
 }
 
 export async function solveProblem(question: string, subject: string): Promise<string> {

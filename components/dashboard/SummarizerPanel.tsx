@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import FileUploadButton from "../FileUploadButton";
+import PasteButton from "../PasteButton";
 
 export default function SummarizerPanel() {
   const [inputText, setInputText] = useState("");
@@ -8,28 +10,29 @@ export default function SummarizerPanel() {
   const [isLoading, setIsLoading] = useState(false);
   const [wordCount, setWordCount] = useState(0);
   const [selectedLength, setSelectedLength] = useState("medium");
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
     setInputText(text);
     setWordCount(text.trim().split(/\s+/).filter(word => word.length > 0).length);
+    setUploadedFileName("");
   };
 
-  const handlePasteText = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      setInputText(text);
-      setWordCount(text.trim().split(/\s+/).filter(word => word.length > 0).length);
-    } catch (err) {
-      // Clipboard permission denied
-      console.log("Clipboard permission denied");
-      alert("📋 Clipboard access not available.\n\nPlease paste manually:\n• Windows/Linux: Ctrl+V\n• Mac: Cmd+V");
-    }
+  const handleFileUpload = (content: string, fileName: string) => {
+    setInputText(content);
+    setUploadedFileName(fileName);
+    setWordCount(content.trim().split(/\s+/).filter(word => word.length > 0).length);
   };
 
-  const handleUploadPDF = () => {
-    // Placeholder for PDF upload functionality
-    alert("PDF upload functionality - Coming soon!");
+  const handlePaste = (content: string) => {
+    setInputText(content);
+    setUploadedFileName("");
+    setWordCount(content.trim().split(/\s+/).filter(word => word.length > 0).length);
+  };
+
+  const handleError = (error: string) => {
+    alert(error);
   };
 
   const handleSummarize = async () => {
@@ -113,26 +116,36 @@ export default function SummarizerPanel() {
             />
           </div>
 
+          {uploadedFileName && (
+            <div className="mb-4 flex items-center gap-3 bg-black border border-green-500/30 rounded-lg p-3">
+              <span className="text-green-400">📄</span>
+              <span className="text-green-200 text-sm flex-1">{uploadedFileName}</span>
+              <button
+                onClick={() => {
+                  setUploadedFileName("");
+                  setInputText("");
+                  setWordCount(0);
+                }}
+                className="text-green-200/70 hover:text-red-400 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className="flex gap-3 mb-4">
-            <button
-              onClick={handlePasteText}
-              className="flex-1 flex items-center justify-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-3 rounded-lg font-medium transition-colors border border-green-500/30"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Paste Text
-            </button>
-            <button
-              onClick={handleUploadPDF}
-              className="flex-1 flex items-center justify-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-3 rounded-lg font-medium transition-colors border border-green-500/30"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-              Upload PDF
-            </button>
+            <PasteButton
+              onPaste={handlePaste}
+              onError={handleError}
+              label="Paste Text"
+            />
+            <FileUploadButton
+              onFileContent={handleFileUpload}
+              onError={handleError}
+              accept=".txt,.md,.pdf,.doc,.docx"
+              label="Upload File"
+            />
           </div>
 
           {/* Length Selection */}

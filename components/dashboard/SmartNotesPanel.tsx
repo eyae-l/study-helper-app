@@ -1,21 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import FileUploadButton from "../FileUploadButton";
+import PasteButton from "../PasteButton";
 
 export default function SmartNotesPanel() {
   const [inputText, setInputText] = useState("");
   const [notes, setNotes] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
-  const handlePaste = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      setInputText(text);
-    } catch (err) {
-      // Clipboard access denied or not available
-      console.log("Clipboard access not available. Please paste manually.");
-      alert("Please paste your text manually using Ctrl+V or Cmd+V");
-    }
+  const handleFileUpload = (content: string, fileName: string) => {
+    setInputText(content);
+    setUploadedFileName(fileName);
+  };
+
+  const handlePaste = (content: string) => {
+    setInputText(content);
+    setUploadedFileName("");
+  };
+
+  const handleError = (error: string) => {
+    alert(error);
   };
 
   const handleGenerateNotes = async () => {
@@ -81,27 +87,42 @@ Your organized notes with proper formatting and structure will appear here. The 
           </label>
           <textarea
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => {
+              setInputText(e.target.value);
+              setUploadedFileName("");
+            }}
             placeholder="Paste or type your text here to generate smart notes..."
             className="w-full h-96 bg-black border border-green-500/30 rounded-lg p-4 text-green-200 placeholder-green-300/50 focus:outline-none focus:border-green-500 resize-none mb-4"
           />
+
+          {uploadedFileName && (
+            <div className="mb-4 flex items-center gap-3 bg-black border border-green-500/30 rounded-lg p-3">
+              <span className="text-green-400">📄</span>
+              <span className="text-green-200 text-sm flex-1">{uploadedFileName}</span>
+              <button
+                onClick={() => {
+                  setUploadedFileName("");
+                  setInputText("");
+                }}
+                className="text-green-200/70 hover:text-red-400 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          )}
           
           <div className="flex gap-3">
-            <button
-              onClick={handlePaste}
-              className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-3 rounded-lg font-medium transition-colors border border-green-500/30 flex items-center justify-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Paste Text
-            </button>
-            <button className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-3 rounded-lg font-medium transition-colors border border-green-500/30 flex items-center justify-center gap-2">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-              Upload File
-            </button>
+            <PasteButton
+              onPaste={handlePaste}
+              onError={handleError}
+              label="Paste Text"
+            />
+            <FileUploadButton
+              onFileContent={handleFileUpload}
+              onError={handleError}
+              accept=".txt,.md,.pdf,.doc,.docx"
+              label="Upload File"
+            />
           </div>
         </div>
 

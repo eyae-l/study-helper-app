@@ -52,7 +52,11 @@ export default function StudyBeatsPanel() {
   const [summaryLength, setSummaryLength] = useState<"short" | "medium" | "long">("medium");
   const [generatedLyrics, setGeneratedLyrics] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isGeneratingMusic, setIsGeneratingMusic] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const genres = [
     { id: "lo-fi", label: "Lo-Fi", color: "from-green-500 to-green-600" },
@@ -310,6 +314,63 @@ All this studying hasn't been in vain`;
     setTitle("");
     setUploadFileName("");
     setIsEditMode(false);
+    setAudioUrl(null);
+    setIsPlaying(false);
+  };
+
+  const handleGenerateMusic = async () => {
+    if (!generatedLyrics.trim()) {
+      alert("Please generate lyrics first!");
+      return;
+    }
+
+    setIsGeneratingMusic(true);
+    
+    try {
+      // Import the API function
+      const { generateStudyBeatsMusic } = await import("@/lib/api");
+      
+      // Generate music with Lyria 3.5
+      const audioBlob = await generateStudyBeatsMusic(generatedLyrics, selectedGenre, summaryLength);
+      
+      // Create URL for the audio blob
+      const url = URL.createObjectURL(audioBlob);
+      setAudioUrl(url);
+      
+      // Clean up old URL if exists
+      if (audioRef.current?.src) {
+        URL.revokeObjectURL(audioRef.current.src);
+      }
+      
+      alert("✅ Song generated successfully! Click Play to listen.");
+    } catch (error) {
+      console.error("Error generating music:", error);
+      alert("Failed to generate music. Please try again.\n\nNote: Music generation may take 20-60 seconds and requires a valid Gemini API key.");
+    } finally {
+      setIsGeneratingMusic(false);
+    }
+  };
+
+  const handlePlayPause = () => {
+    if (!audioRef.current || !audioUrl) return;
+    
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleDownloadSong = () => {
+    if (!audioUrl) return;
+    
+    const a = document.createElement('a');
+    a.href = audioUrl;
+    a.download = `${title || 'study-beat'}-${selectedGenre}.mp3`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const handleClearAll = () => {
@@ -792,13 +853,97 @@ Tips for best results:
                 </div>
 
                 <button
-                  className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-3 shadow-lg shadow-blue-500/30 hover:scale-[1.02]"
+                  onClick={handleGenerateMusic}
+                  disabled={isGeneratingMusic}
+                  className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-3 shadow-lg shadow-blue-500/30 hover:scale-[1.02]"
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                  </svg>
-                  <span>Generate Full Song with AI</span>
+                  {isGeneratingMusic ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Generating Song... (20-60 seconds)</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                      </svg>
+                      <span>Generate Full Song with AI</span>
+                    </>
+                  )}
                 </button>
+
+                {/* Audio Player - Shows after music is generated */}
+                {audioUrl && (
+                  <div className="w-full bg-gradient-to-br from-gray-900/90 to-gray-950/90 border border-green-500/30 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+                    <audio
+                      ref={audioRef}
+                      src={audioUrl}
+                      onEnded={() => setIsPlaying(false)}
+                      onPlay={() => setIsPlaying(true)}
+                      onPause={() => setIsPlaying(false)}
+                      className="hidden"
+                    />
+                    
+                    <div className="flex items-center gap-4">
+                      {/* Play/Pause Button */}
+                      <button
+                        onClick={handlePlayPause}
+                        className="w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/30 hover:scale-110 transition-all duration-300"
+                      >
+                        {isPlaying ? (
+                          <PauseIcon className="w-6 h-6 text-white" strokeWidth={2} />
+                        ) : (
+                          <PlayIcon className="w-6 h-6 text-white ml-0.5" strokeWidth={2} />
+                        )}
+                      </button>
+
+                      {/* Song Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="text-white font-semibold text-sm mb-1 truncate">
+                          {title || "Study Beat"}
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-green-200/70">
+                          <span className="bg-white/10 px-2 py-0.5 rounded">
+                            {selectedGenre.toUpperCase()}
+                          </span>
+                          <span>•</span>
+                          <span>
+                            {summaryLength === "short" ? "~1 min" : summaryLength === "medium" ? "~2-3 min" : "~4-5 min"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Download Button */}
+                      <button
+                        onClick={handleDownloadSong}
+                        className="bg-white/5 hover:bg-white/10 text-green-200 hover:text-white px-4 py-3 rounded-xl font-medium transition-all duration-300 border border-green-500/30/50 hover:border-green-500/50 flex items-center gap-2"
+                        title="Download MP3"
+                      >
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span className="hidden sm:inline">Download</span>
+                      </button>
+                    </div>
+
+                    {/* Waveform visualization (visual indicator) */}
+                    {isPlaying && (
+                      <div className="flex items-center justify-center gap-1 mt-4 h-8">
+                        {[...Array(40)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-1 bg-gradient-to-t from-purple-600 to-pink-500 rounded-full animate-pulse"
+                            style={{
+                              height: `${20 + Math.random() * 80}%`,
+                              animationDelay: `${i * 50}ms`,
+                              animationDuration: `${500 + Math.random() * 500}ms`,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>

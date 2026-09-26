@@ -28,17 +28,23 @@ export default function CTA() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="px-8 py-4 bg-[#5eead4] text-[#0A0F0D] text-lg font-bold rounded-xl hover:bg-[#7dd3c0] transition-all shadow-lg shadow-[#5eead4]/20 hover:shadow-[#5eead4]/40 group">
+              <a 
+                href="/dashboard"
+                className="px-8 py-4 bg-[#5eead4] text-[#0A0F0D] text-lg font-bold rounded-xl hover:bg-[#7dd3c0] transition-all shadow-lg shadow-[#5eead4]/20 hover:shadow-[#5eead4]/40 group"
+              >
                 <span className="flex items-center gap-2">
                   Start Learning Free
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </span>
-              </button>
-              <button className="px-8 py-4 bg-transparent text-gray-300 text-lg font-semibold rounded-xl border border-[#2d4a3d] hover:border-[#5eead4]/30 hover:text-white transition-all">
+              </a>
+              <a
+                href="#pricing"
+                className="px-8 py-4 bg-transparent text-gray-300 text-lg font-semibold rounded-xl border border-[#2d4a3d] hover:border-[#5eead4]/30 hover:text-white transition-all"
+              >
                 View Pricing
-              </button>
+              </a>
             </div>
 
             {/* Small Print */}
