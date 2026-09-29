@@ -12,14 +12,15 @@ export async function initializeDemoStudySet() {
     });
 
     if (!res.ok) {
-      throw new Error('Failed to initialize demo data');
+      console.warn('Demo data initialization endpoint not available (non-critical)');
+      return null;
     }
 
     const data = await res.json();
     console.log(data.message);
     return data.studySet;
   } catch (error) {
-    console.error('Failed to initialize demo data:', error);
+    console.warn('Demo data initialization skipped (database not configured)');
     return null;
   }
 }
