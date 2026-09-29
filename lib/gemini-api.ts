@@ -199,7 +199,7 @@ Generate the mind map now:`;
   return generateWithGemini(prompt);
 }
 
-export async function generateStudyBeatsLyricsWithGemini(
+export async function generateSongItLyricsWithGemini(
   content: string,
   genre: string,
   length: "short" | "medium" | "long" = "medium"

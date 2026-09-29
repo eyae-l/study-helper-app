@@ -5,8 +5,8 @@ import ThemeToggle from '../ThemeToggle';
 export default function DashboardHome() {
   const aiTools = [
     {
-      id: "study-beats",
-      name: "Study Beats AI",
+      id: "song-it",
+      name: "Song It",
       description: "Transform notes into summaries and memorable lyrics for better retention.",
       iconType: "music",
       gradient: "from-green-500 to-green-600",
@@ -28,15 +28,6 @@ export default function DashboardHome() {
       description: "AI problem solver with step-by-step explanations across subjects.",
       iconType: "lightbulb",
       gradient: "from-green-500 to-green-700",
-      badge: null,
-      badgeColor: "",
-    },
-    {
-      id: "mind-map",
-      name: "Mind Map",
-      description: "Visualize knowledge with interactive hierarchical diagrams.",
-      iconType: "map",
-      gradient: "from-green-400 to-green-500",
       badge: null,
       badgeColor: "",
     },
@@ -307,7 +298,7 @@ export default function DashboardHome() {
                 <p className="text-green-200/70 text-xs">This week</p>
               </div>
               <div className="text-right">
-                <p className="text-green-400 text-xs font-medium">Study Beats</p>
+                <p className="text-green-400 text-xs font-medium">Song It</p>
                 <p className="text-green-300/50 text-xs">Most used</p>
               </div>
             </div>
@@ -333,7 +324,7 @@ export default function DashboardHome() {
               </svg>
               <div className="flex-1">
                 <h3 className="text-white font-semibold text-sm mb-0.5">Continue Last Session</h3>
-                <p className="text-green-200/70 text-xs">Resume Study Beats AI from 2 hours ago</p>
+                <p className="text-green-200/70 text-xs">Resume Song It from 2 hours ago</p>
               </div>
               <svg className="w-4 h-4 text-green-300/50 group-hover:text-green-400 transform group-hover:translate-x-0.5 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

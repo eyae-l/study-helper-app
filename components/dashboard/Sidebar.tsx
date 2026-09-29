@@ -92,9 +92,8 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
 
   const aiTools = [
     { id: "solve-ai", label: "Solve AI", icon: <LightBulbIcon /> },
-    { id: "mind-map", label: "Mind Map", icon: <MapIcon /> },
     { id: "paper-grader", label: "Paper Grader", icon: <ClipboardIcon /> },
-    { id: "study-beats", label: "Study Beats AI", icon: <MusicIcon /> },
+    { id: "song-it", label: "Song It", icon: <MusicIcon /> },
     { id: "summarizer", label: "Summarizer", icon: <DocumentIcon /> },
     { id: "smart-notes", label: "Smart Notes", icon: <BookIcon /> },
     { id: "quizzes", label: "Quizzes", icon: <QuestionIcon /> },

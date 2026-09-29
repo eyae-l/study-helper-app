@@ -115,17 +115,17 @@ export async function generateSmartNotes(content: string): Promise<string> {
   return generateAIResponse(messages);
 }
 
-export async function generateStudyBeatsLyrics(
+export async function generateSongItLyrics(
   content: string,
   genre: string,
   length: "short" | "medium" | "long" = "medium"
 ): Promise<string> {
   // Use Gemini API for better results
-  const { generateStudyBeatsLyricsWithGemini } = await import("@/lib/gemini-api");
-  return generateStudyBeatsLyricsWithGemini(content, genre, length);
+  const { generateSongItLyricsWithGemini } = await import("@/lib/gemini-api");
+  return generateSongItLyricsWithGemini(content, genre, length);
 }
 
-export async function generateStudyBeatsMusic(
+export async function generateSongItMusic(
   lyrics: string,
   genre: string,
   length: "short" | "medium" | "long" = "medium"

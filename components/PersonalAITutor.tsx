@@ -90,7 +90,7 @@ export default function PersonalAITutor() {
                       </div>
                       <div className="flex items-center gap-2 px-2 py-1 text-gray-500 text-[10px] hover:text-gray-900">
                         <span>🎵</span>
-                        <span>Study Beats AI</span>
+                        <span>Song It</span>
                       </div>
                       <div className="flex items-center gap-2 px-2 py-1 text-gray-500 text-[10px] hover:text-gray-900">
                         <span>📄</span>

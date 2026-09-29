@@ -35,7 +35,7 @@ interface Playlist {
   createdAt: string;
 }
 
-export default function StudyBeatsPanel() {
+export default function SongItPanel() {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState("lo-fi");
@@ -78,8 +78,8 @@ export default function StudyBeatsPanel() {
   const loadSavedData = () => {
     if (typeof window === "undefined") return;
     
-    const songs = localStorage.getItem("study_beats_songs");
-    const lists = localStorage.getItem("study_beats_playlists");
+    const songs = localStorage.getItem("song_it_songs");
+    const lists = localStorage.getItem("song_it_playlists");
     
     if (songs) setSavedSongs(JSON.parse(songs));
     if (lists) setPlaylists(JSON.parse(lists));
@@ -165,10 +165,10 @@ export default function StudyBeatsPanel() {
     
     try {
       // Import the API function
-      const { generateStudyBeatsLyrics } = await import("@/lib/api");
+      const { generateSongItLyrics } = await import("@/lib/api");
       
       // Get real AI-generated lyrics
-      const aiLyrics = await generateStudyBeatsLyrics(inputText, selectedGenre, summaryLength);
+      const aiLyrics = await generateSongItLyrics(inputText, selectedGenre, summaryLength);
       
       setGeneratedLyrics(aiLyrics);
       setIsEditMode(false);
@@ -189,7 +189,7 @@ Transform the knowledge, keep it near
 
 [Outro]
 Now I remember, concepts are clear
-Study beats helped, nothing to fear`;
+Song It helped, nothing to fear`;
       } else if (summaryLength === "medium") {
         lyricsContent = `[Verse 1]
 Learning new concepts, breaking them down
@@ -201,7 +201,7 @@ Studying smart now, one step at a time
 Grasp the content, make it simple and clear
 Transform the knowledge, keep it near
 Main ideas to melodies, that's how we learn
-Study beats playing, watch the concepts turn
+Song It playing, watch the concepts turn
 
 [Verse 2]
 From notes to summaries, now to a song
@@ -211,7 +211,7 @@ Education through music, wisdom I gain
 
 [Outro]
 Now I remember, concepts are clear
-Study beats helped, nothing to fear`;
+Song It helped, nothing to fear`;
       } else {
         lyricsContent = `[Intro]
 Starting my journey, notes in my hand
@@ -231,7 +231,7 @@ Building my knowledge, word amounts
 Grasp the content, make it simple and clear
 Transform the knowledge, keep it near
 Main ideas to melodies, that's how we learn
-Study beats playing, watch the concepts turn
+Song It playing, watch the concepts turn
 
 [Verse 2]
 From notes to summaries, now to a song
@@ -243,17 +243,17 @@ Education through music, wisdom I gain
 La la la, learn learn learn
 Knowledge returns, watch it burn
 Main ideas in harmony
-Study beats set me free
+Song It set me free
 
 [Chorus - Repeat]
 Grasp the content, make it simple and clear
 Transform the knowledge, keep it near
 Main ideas to melodies, that's how we learn
-Study beats playing, watch the concepts turn
+Song It playing, watch the concepts turn
 
 [Outro]
 Now I remember, concepts are clear
-Study beats helped, nothing to fear
+Song It helped, nothing to fear
 Learning complete, knowledge retained
 All this studying hasn't been in vain`;
       }
@@ -281,7 +281,7 @@ All this studying hasn't been in vain`;
 
     const updatedSongs = [newSong, ...savedSongs];
     setSavedSongs(updatedSongs);
-    localStorage.setItem("study_beats_songs", JSON.stringify(updatedSongs));
+    localStorage.setItem("song_it_songs", JSON.stringify(updatedSongs));
     
     // Show success feedback
     alert("✅ Song saved successfully!");
@@ -328,10 +328,10 @@ All this studying hasn't been in vain`;
     
     try {
       // Import the API function
-      const { generateStudyBeatsMusic } = await import("@/lib/api");
+      const { generateSongItMusic } = await import("@/lib/api");
       
       // Generate music with Lyria 3.5
-      const audioBlob = await generateStudyBeatsMusic(generatedLyrics, selectedGenre, summaryLength);
+      const audioBlob = await generateSongItMusic(generatedLyrics, selectedGenre, summaryLength);
       
       // Create URL for the audio blob
       const url = URL.createObjectURL(audioBlob);
@@ -403,7 +403,7 @@ All this studying hasn't been in vain`;
 
     const updated = [newPlaylist, ...playlists];
     setPlaylists(updated);
-    localStorage.setItem("study_beats_playlists", JSON.stringify(updated));
+    localStorage.setItem("song_it_playlists", JSON.stringify(updated));
     setNewPlaylistName("");
     setShowNewPlaylistModal(false);
   };
@@ -411,7 +411,7 @@ All this studying hasn't been in vain`;
   const handleDeletePlaylist = (id: string) => {
     const updated = playlists.filter(p => p.id !== id);
     setPlaylists(updated);
-    localStorage.setItem("study_beats_playlists", JSON.stringify(updated));
+    localStorage.setItem("song_it_playlists", JSON.stringify(updated));
   };
 
   return (
@@ -423,7 +423,7 @@ All this studying hasn't been in vain`;
             <MusicalNoteIcon className="w-7 h-7 text-white" strokeWidth={2} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Study Beats AI</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Song It</h1>
             <p className="text-green-200/70 text-base mt-1">
               Transform your notes into memorable study songs
             </p>
