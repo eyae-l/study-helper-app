@@ -747,21 +747,63 @@ function StudyWorkspace({
       <div className="max-w-2xl mx-auto mb-8">
         <div
           onClick={handleFlipCard}
-          className="bg-[#0c0d20] border-2 border-gray-800 rounded-2xl p-12 min-h-[400px] flex items-center justify-center cursor-pointer hover:border-green-500/30 transition-all group"
+          className="relative cursor-pointer"
           style={{
             perspective: "1000px",
+            height: "400px",
           }}
         >
-          <div className="text-center">
-            <div className="text-gray-500 text-sm uppercase tracking-wider mb-4">
-              {isFlipped ? "Answer" : "Question"}
+          {/* Card Container with Flip Animation */}
+          <div
+            className="relative w-full h-full transition-transform duration-700"
+            style={{
+              transformStyle: "preserve-3d",
+              transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+            }}
+          >
+            {/* Front of Card (Question) */}
+            <div
+              className="absolute inset-0 bg-gradient-to-br from-[#0c0d20] to-[#0a0b1e] border-2 border-gray-800 rounded-2xl p-12 flex items-center justify-center hover:border-green-500/30 transition-all shadow-2xl"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+              }}
+            >
+              <div className="text-center">
+                <div className="text-green-400 text-sm uppercase tracking-wider mb-4 font-semibold">
+                  Question
+                </div>
+                <p className="text-white text-2xl leading-relaxed mb-6">
+                  {currentCard.question}
+                </p>
+                <p className="text-gray-500 text-sm flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                  </svg>
+                  Click to flip
+                </p>
+              </div>
             </div>
-            <p className="text-white text-2xl leading-relaxed mb-6">
-              {isFlipped ? currentCard.answer : currentCard.question}
-            </p>
-            {!isFlipped && (
-              <p className="text-gray-500 text-sm">Click to reveal answer</p>
-            )}
+
+            {/* Back of Card (Answer) */}
+            <div
+              className="absolute inset-0 bg-gradient-to-br from-[#1a1b2e] to-[#0d0e1a] border-2 border-green-500/30 rounded-2xl p-12 flex items-center justify-center shadow-2xl"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+              }}
+            >
+              <div className="text-center">
+                <div className="text-green-400 text-sm uppercase tracking-wider mb-4 font-semibold">
+                  Answer
+                </div>
+                <p className="text-white text-2xl leading-relaxed mb-6">
+                  {currentCard.answer}
+                </p>
+                <p className="text-gray-500 text-sm">Rate your knowledge below</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
