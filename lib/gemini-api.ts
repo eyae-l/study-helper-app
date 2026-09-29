@@ -1,13 +1,47 @@
-// Google Gemini API integration
+// AI API integration with automatic fallback (Gemini → OpenAI)
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
+const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
 interface GeminiMessage {
   role: string;
   parts: { text: string }[];
 }
 
+// Automatic fallback: Try Gemini first, then OpenAI if it fails
+export async function generateWithAI(prompt: string): Promise<string> {
+  // Try Gemini first
+  if (GEMINI_API_KEY) {
+    try {
+      console.log('Attempting Gemini API...');
+      return await generateWithGemini(prompt);
+    } catch (error: any) {
+      console.warn('Gemini failed, falling back to OpenAI:', error.message);
+      
+      // Check if it's a 503 error (high demand) or other error
+      if (error.message.includes('503') || error.message.includes('UNAVAILABLE')) {
+        console.log('Gemini is overloaded (503), switching to OpenAI...');
+      }
+    }
+  }
+
+  // Fallback to OpenAI
+  if (OPENAI_API_KEY) {
+    try {
+      console.log('Using OpenAI API...');
+      return await generateWithOpenAI(prompt);
+    } catch (error) {
+      console.error('OpenAI also failed:', error);
+      throw error;
+    }
+  }
+
+  throw new Error('No API keys configured. Please add GEMINI_API_KEY or OPENAI_API_KEY to .env.local');
+}
+
+// Gemini API call
 export async function generateWithGemini(prompt: string): Promise<string> {
   if (!GEMINI_API_KEY) {
     throw new Error('Gemini API key is not configured');
@@ -52,6 +86,52 @@ export async function generateWithGemini(prompt: string): Promise<string> {
   }
 }
 
+// OpenAI API call (fallback)
+export async function generateWithOpenAI(prompt: string): Promise<string> {
+  if (!OPENAI_API_KEY) {
+    throw new Error('OpenAI API key is not configured');
+  }
+
+  try {
+    const response = await fetch(OPENAI_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo", // Free tier available
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 2048,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenAI API Error Response:', errorText);
+      throw new Error(`OpenAI API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content;
+    
+    if (!text) {
+      throw new Error('No response from OpenAI');
+    }
+
+    return text;
+  } catch (error) {
+    console.error("OpenAI API Error:", error);
+    throw error;
+  }
+}
+
 export async function generateFlashcardsWithGemini(content: string, count: number = 10): Promise<string> {
   const prompt = `You are an expert educational content creator. Generate exactly ${count} flashcards from this content.
 
@@ -68,7 +148,7 @@ Example format:
 
 Generate ${count} flashcards now:`;
 
-  return generateWithGemini(prompt);
+  return generateWithAI(prompt);
 }
 
 export async function generateQuizWithGemini(
@@ -99,7 +179,7 @@ Example format:
 
 Generate ${count} ${difficulty} questions now:`;
 
-  return generateWithGemini(prompt);
+  return generateWithAI(prompt);
 }
 
 export async function generateSummaryWithGemini(
@@ -116,7 +196,7 @@ export async function generateSummaryWithGemini(
 
 ${content}`;
 
-  return generateWithGemini(prompt);
+  return generateWithAI(prompt);
 }
 
 export async function generateSmartNotesWithGemini(content: string): Promise<string> {
@@ -129,7 +209,7 @@ export async function generateSmartNotesWithGemini(content: string): Promise<str
 Content:
 ${content}`;
 
-  return generateWithGemini(prompt);
+  return generateWithAI(prompt);
 }
 
 export async function solveProblemWithGemini(question: string, subject: string): Promise<string> {
@@ -139,7 +219,7 @@ ${question}
 
 Break down the solution and explain your reasoning.`;
 
-  return generateWithGemini(prompt);
+  return generateWithAI(prompt);
 }
 
 export async function generateMindMapWithGemini(content: string): Promise<string> {
@@ -196,7 +276,7 @@ Return a JSON object in this EXACT format:
 
 Generate the mind map now:`;
 
-  return generateWithGemini(prompt);
+  return generateWithAI(prompt);
 }
 
 export async function generateSongItLyricsWithGemini(
@@ -255,7 +335,7 @@ EXAMPLE FORMAT:
 
 Generate the complete song lyrics now:`;
 
-  return generateWithGemini(prompt);
+  return generateWithAI(prompt);
 }
 
 export async function generateMusicWithLyria(
