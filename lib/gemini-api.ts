@@ -18,23 +18,27 @@ export async function generateWithAI(prompt: string): Promise<string> {
       console.log('Attempting Gemini API...');
       return await generateWithGemini(prompt);
     } catch (error: any) {
-      console.warn('Gemini failed, falling back to OpenAI:', error.message);
+      console.warn('Gemini failed:', error.message);
       
-      // Check if it's a 503 error (high demand) or other error
-      if (error.message.includes('503') || error.message.includes('UNAVAILABLE')) {
-        console.log('Gemini is overloaded (503), switching to OpenAI...');
+      // Check if OpenAI is configured before trying
+      if (OPENAI_API_KEY && OPENAI_API_KEY !== 'your-openai-api-key-here') {
+        // Check if it's a 503 error (high demand) or other error
+        if (error.message.includes('503') || error.message.includes('UNAVAILABLE')) {
+          console.log('Gemini is overloaded (503), switching to OpenAI...');
+        }
+        
+        // Try OpenAI fallback
+        try {
+          console.log('Using OpenAI API...');
+          return await generateWithOpenAI(prompt);
+        } catch (openaiError) {
+          console.error('OpenAI also failed:', openaiError);
+          throw error; // Throw original Gemini error
+        }
+      } else {
+        console.log('OpenAI not configured, returning Gemini error');
+        throw error; // No fallback available
       }
-    }
-  }
-
-  // Fallback to OpenAI
-  if (OPENAI_API_KEY) {
-    try {
-      console.log('Using OpenAI API...');
-      return await generateWithOpenAI(prompt);
-    } catch (error) {
-      console.error('OpenAI also failed:', error);
-      throw error;
     }
   }
 
