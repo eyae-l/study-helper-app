@@ -1,6 +1,9 @@
 "use client";
 
 import ThemeToggle from '../ThemeToggle';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 export default function DashboardHome() {
   const aiTools = [
@@ -175,40 +178,43 @@ export default function DashboardHome() {
           </div>
         </div>
         
-        {/* Featured Tools - Enhanced Full Width Row */}
+        {/* Featured Tools - Enhanced Full Width Row with shadcn Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {aiTools.slice(0, 2).map((tool, index) => (
-            <button
+            <Card
               key={tool.id}
-              onClick={() => handleToolClick(tool.id)}
-              className="group relative card-elevated rounded-3xl p-7 text-left overflow-hidden hover-lift transition-all duration-500"
+              className="group relative cursor-pointer overflow-hidden hover-lift transition-all duration-500 border-green-500/20 bg-gradient-to-br from-[#0c0d20]/80 to-[#0a0b1e]/90 backdrop-blur"
               style={{animationDelay: `${0.15 + index * 0.05}s`}}
+              onClick={() => handleToolClick(tool.id)}
             >
               {/* Animated Background Gradient */}
               <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-3xl`} />
               <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
               
-              {/* Content */}
-              <div className="relative z-10">
+              <CardHeader className="relative z-10">
                 {/* Icon and Badge Row */}
-                <div className="flex items-start justify-between mb-5">
+                <div className="flex items-start justify-between mb-3">
                   <div className={`w-14 h-14 bg-gradient-to-br ${tool.gradient} rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
                     {getIcon(tool.iconType)}
                   </div>
                   {tool.badge && (
-                    <span className={`px-3 py-1.5 rounded-xl text-xs font-bold ${tool.badgeColor} border backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300`}>
+                    <Badge variant="secondary" className={`${tool.badgeColor} border backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300`}>
                       {tool.badge}
-                    </span>
+                    </Badge>
                   )}
                 </div>
 
-                {/* Title and Arrow */}
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <h3 className="text-white font-bold text-xl group-hover:text-gray-50 transition-colors duration-300">
-                    {tool.name}
-                  </h3>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <CardTitle className="text-xl group-hover:text-gray-50 transition-colors duration-300 mb-2">
+                      {tool.name}
+                    </CardTitle>
+                    <CardDescription className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                      {tool.description}
+                    </CardDescription>
+                  </div>
                   <svg 
-                    className="w-5 h-5 text-gray-500 group-hover:text-green-400 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 flex-shrink-0 mt-1" 
+                    className="w-5 h-5 text-gray-500 group-hover:text-green-400 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 flex-shrink-0" 
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor" 
@@ -217,77 +223,69 @@ export default function DashboardHome() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </div>
-
-                {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-                  {tool.description}
-                </p>
-              </div>
+              </CardHeader>
 
               {/* Hover Border Effect */}
               <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/0 group-hover:ring-green-500/30 transition-all duration-500" />
-            </button>
+            </Card>
           ))}
         </div>
 
-        {/* Other Tools - Enhanced Regular Grid */}
+        {/* Other Tools - Enhanced Regular Grid with shadcn Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {aiTools.slice(2).map((tool, index) => (
-            <button
+            <Card
               key={tool.id}
-              onClick={() => handleToolClick(tool.id)}
-              className="group relative card-glass rounded-2xl p-6 text-left overflow-hidden hover-lift transition-all duration-500"
+              className="group relative cursor-pointer overflow-hidden hover-lift transition-all duration-500 border-green-500/20 bg-gradient-to-br from-[#0c0d20]/60 to-[#0a0b1e]/80 backdrop-blur"
               style={{animationDelay: `${0.2 + index * 0.05}s`}}
+              onClick={() => handleToolClick(tool.id)}
             >
               {/* Hover Gradient Effect */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
               
-              {/* Content */}
-              <div className="relative z-10">
+              <CardContent className="relative z-10 p-6">
                 {/* Icon and Badge */}
                 <div className="flex items-start justify-between mb-4">
                   <div className={`w-12 h-12 bg-gradient-to-br ${tool.gradient} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
                     {getIcon(tool.iconType)}
                   </div>
                   {tool.badge && (
-                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${tool.badgeColor} border backdrop-blur-sm group-hover:scale-105 transition-transform duration-300`}>
+                    <Badge variant="secondary" className={`${tool.badgeColor} border backdrop-blur-sm group-hover:scale-105 transition-transform duration-300`}>
                       {tool.badge}
-                    </span>
+                    </Badge>
                   )}
                 </div>
 
-                {/* Title */}
-                <h3 className="text-white font-bold text-base mb-2 group-hover:text-gray-50 transition-colors duration-300">
+                <CardTitle className="text-base mb-2 group-hover:text-gray-50 transition-colors duration-300">
                   {tool.name}
-                </h3>
+                </CardTitle>
 
-                {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+                <CardDescription className="text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
                   {tool.description}
-                </p>
-              </div>
+                </CardDescription>
+              </CardContent>
 
               {/* Hover Border Effect */}
               <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/0 group-hover:ring-green-500/30 transition-all duration-500" />
-            </button>
+            </Card>
           ))}
         </div>
       </section>
 
-      {/* Enhanced Stats Grid with Better Visual Design */}
+      {/* Enhanced Stats Grid with Better Visual Design using shadcn Cards */}
       <section className="mb-12 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* AI Words Usage - Enhanced Card */}
-          <div className="relative group card-elevated rounded-2xl p-6 hover-lift">
+          <Card className="relative group border-blue-500/20 bg-gradient-to-br from-[#0c0d20]/80 to-[#0a0b1e]/90 hover-lift">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-            <div className="relative">
+            <CardContent className="relative p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-base">AI Words</h3>
+                <CardTitle className="text-base">AI Words</CardTitle>
               </div>
               <div className="flex items-end justify-between">
                 <div>
@@ -296,28 +294,25 @@ export default function DashboardHome() {
                 </div>
                 <div className="text-right">
                   <p className="text-gray-500 text-sm line-through mb-0.5">245</p>
-                  <div className="flex items-center gap-1.5 bg-red-500/20 px-2.5 py-1 rounded-lg border border-red-500/30">
-                    <svg className="w-3.5 h-3.5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-red-400 text-xs font-semibold">Low</span>
-                  </div>
+                  <Badge variant="destructive" className="bg-red-500/20 text-red-400 border-red-500/30">
+                    Low
+                  </Badge>
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Activity - Enhanced Card */}
-          <div className="relative group card-elevated rounded-2xl p-6 hover-lift">
+          <Card className="relative group border-green-500/20 bg-gradient-to-br from-[#0c0d20]/80 to-[#0a0b1e]/90 hover-lift">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-            <div className="relative">
+            <CardContent className="relative p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-11 h-11 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-base">Activity</h3>
+                <CardTitle className="text-base">Activity</CardTitle>
               </div>
               <div className="flex items-end justify-between">
                 <div>
@@ -325,29 +320,26 @@ export default function DashboardHome() {
                   <p className="text-gray-400 text-sm">Minutes today</p>
                 </div>
                 <div className="text-right">
-                  <div className="flex items-center gap-1.5 bg-green-500/20 px-2.5 py-1 rounded-lg border border-green-500/30 mb-0.5">
-                    <svg className="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                    <span className="text-green-400 text-xs font-semibold">+18%</span>
-                  </div>
+                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30 mb-0.5">
+                    +18%
+                  </Badge>
                   <p className="text-gray-500 text-xs">vs yesterday</p>
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Tools Used - Enhanced Card */}
-          <div className="relative group card-elevated rounded-2xl p-6 hover-lift">
+          <Card className="relative group border-purple-500/20 bg-gradient-to-br from-[#0c0d20]/80 to-[#0a0b1e]/90 hover-lift">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-            <div className="relative">
+            <CardContent className="relative p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-11 h-11 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-base">Tools Used</h3>
+                <CardTitle className="text-base">Tools Used</CardTitle>
               </div>
               <div className="flex items-end justify-between">
                 <div>
@@ -359,12 +351,12 @@ export default function DashboardHome() {
                   <p className="text-gray-500 text-xs">Most used</p>
                 </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
-      {/* Enhanced Quick Actions */}
+      {/* Enhanced Quick Actions with shadcn Cards */}
       <section className="animate-fade-in-up" style={{animationDelay: '0.4s'}}>
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -376,42 +368,46 @@ export default function DashboardHome() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <button className="group relative card-elevated rounded-2xl p-6 text-left hover-lift">
+          <Card className="group cursor-pointer border-green-500/20 bg-gradient-to-br from-[#0c0d20]/80 to-[#0a0b1e]/90 hover-lift">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-            <div className="relative flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 flex-shrink-0">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <CardContent className="relative p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 flex-shrink-0">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-base mb-1 group-hover:text-gray-50 transition-colors">Continue Last Session</CardTitle>
+                  <CardDescription className="group-hover:text-gray-300 transition-colors">Resume Song It from 2 hours ago</CardDescription>
+                </div>
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-green-400 transform group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-white font-bold text-base mb-1 group-hover:text-gray-50 transition-colors">Continue Last Session</h3>
-                <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">Resume Song It from 2 hours ago</p>
-              </div>
-              <svg className="w-5 h-5 text-gray-500 group-hover:text-green-400 transform group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </button>
+            </CardContent>
+          </Card>
 
-          <button className="group relative card-elevated rounded-2xl p-6 text-left hover-lift">
+          <Card className="group cursor-pointer border-blue-500/20 bg-gradient-to-br from-[#0c0d20]/80 to-[#0a0b1e]/90 hover-lift">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
-            <div className="relative flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 flex-shrink-0">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <CardContent className="relative p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 flex-shrink-0">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-base mb-1 group-hover:text-gray-50 transition-colors">View History</CardTitle>
+                  <CardDescription className="group-hover:text-gray-300 transition-colors">Access your past work and study sessions</CardDescription>
+                </div>
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-blue-400 transform group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-white font-bold text-base mb-1 group-hover:text-gray-50 transition-colors">View History</h3>
-                <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">Access your past work and study sessions</p>
-              </div>
-              <svg className="w-5 h-5 text-gray-500 group-hover:text-blue-400 transform group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </button>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </div>
