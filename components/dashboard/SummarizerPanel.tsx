@@ -66,75 +66,87 @@ export default function SummarizerPanel() {
   };
 
   return (
-    <div className="min-h-screen bg-black p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0F0D] via-[#0f1612] to-[#0A0F0D] p-8 animate-fade-in">
+      {/* Enhanced Header */}
+      <div className="mb-10">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-4 animate-fade-in-up">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-40 group-hover:opacity-60 transition duration-300"></div>
+              <div className="relative w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl ring-4 ring-[#0A0F0D]">
+                <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Summarizer</h1>
-              <p className="text-green-200/70 text-sm">
+              <h1 className="text-3xl font-bold text-white tracking-tight">Summarizer</h1>
+              <p className="text-gray-400 text-base mt-1">
                 Transform lengthy content into concise summaries
               </p>
             </div>
           </div>
-          <button className="bg-green-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          <button className="btn-primary flex items-center gap-2 animate-fade-in" style={{animationDelay: '0.1s'}}>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            Summarizer
+            Usage Stats
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Input Section */}
-        <div className="bg-gray-950 rounded-xl border border-green-500/20 p-6">
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-white font-medium flex items-center gap-2">
-                Input <span className="text-green-400 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        {/* Enhanced Input Section */}
+        <div className="card-elevated rounded-3xl p-7 animate-fade-in-up" style={{animationDelay: '0.15s'}}>
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <label className="text-white font-bold text-lg flex items-center gap-2">
+                Input Content
+                <span className="text-green-400 flex items-center gap-1.5 bg-green-500/20 px-3 py-1 rounded-lg border border-green-500/30 text-sm">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  0 Words
+                  {wordCount} words
                 </span>
               </label>
-              <span className="text-green-200/70 text-sm">{wordCount} words</span>
             </div>
 
             <textarea
               value={inputText}
               onChange={handleTextChange}
-              placeholder="Paste or type your text here to generate a summary..."
-              className="w-full h-64 bg-black border border-green-500/30 rounded-lg p-4 text-green-200 placeholder-green-300/50 focus:outline-none focus:border-green-500 resize-none"
+              placeholder="Paste or type your text here to generate a summary...
+
+Tips for best results:
+• Add full paragraphs for better context
+• Include complete sentences
+• The more detailed, the better the summary"
+              className="w-full h-64 bg-[#0A0F0D] border border-green-500/30 rounded-2xl p-5 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-green-500/50 focus:ring-2 focus:ring-green-500/20 resize-none transition-all"
             />
           </div>
 
           {uploadedFileName && (
-            <div className="mb-4 flex items-center gap-3 bg-black border border-green-500/30 rounded-lg p-3">
-              <span className="text-green-400">📄</span>
-              <span className="text-green-200 text-sm flex-1">{uploadedFileName}</span>
+            <div className="mb-5 flex items-center gap-3 card-glass rounded-xl p-4 border border-green-500/30 hover-lift">
+              <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-2xl">📄</span>
+              </div>
+              <span className="text-gray-200 text-sm flex-1 font-medium truncate">{uploadedFileName}</span>
               <button
                 onClick={() => {
                   setUploadedFileName("");
                   setInputText("");
                   setWordCount(0);
                 }}
-                className="text-green-200/70 hover:text-red-400 transition-colors"
+                className="text-gray-400 hover:text-red-400 transition-colors p-2 hover:bg-red-500/10 rounded-lg"
               >
-                ✕
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
           )}
 
-          {/* Action Buttons */}
-          <div className="flex gap-3 mb-4">
+          {/* Enhanced Action Buttons */}
+          <div className="flex gap-3 mb-6">
             <PasteButton
               onPaste={handlePaste}
               onError={handleError}
@@ -148,20 +160,23 @@ export default function SummarizerPanel() {
             />
           </div>
 
-          {/* Length Selection */}
-          <div className="mb-4">
-            <label className="text-white text-sm font-medium mb-2 block">
+          {/* Enhanced Length Selection */}
+          <div className="mb-6">
+            <label className="text-white text-sm font-bold mb-3 block flex items-center gap-2">
+              <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
               Summary Length
             </label>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-3 gap-3">
               {["short", "medium", "long"].map((length) => (
                 <button
                   key={length}
                   onClick={() => setSelectedLength(length)}
-                  className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-4 py-3.5 rounded-xl text-sm font-bold transition-all duration-300 ${
                     selectedLength === length
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-800 text-green-200/70 hover:bg-gray-700"
+                      ? "bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/30 scale-105"
+                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10 hover:border-green-500/30"
                   }`}
                 >
                   {length.charAt(0).toUpperCase() + length.slice(1)}
@@ -170,83 +185,99 @@ export default function SummarizerPanel() {
             </div>
           </div>
 
-          {/* Summarize Button */}
+          {/* Enhanced Summarize Button */}
           <button
             onClick={handleSummarize}
             disabled={isLoading || !inputText.trim()}
-            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 hover:from-blue-700 hover:via-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-base transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 hover:scale-[1.02]"
           >
             {isLoading ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Summarizing...
+                <span>Summarizing...</span>
               </>
             ) : (
               <>
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
-                Summarize (Free)
+                <span>Generate Summary (Free)</span>
               </>
             )}
           </button>
         </div>
 
-        {/* Output Section */}
-        <div className="bg-gray-950 rounded-xl border border-green-500/20 p-6">
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-white font-medium">Summary</label>
+        {/* Enhanced Output Section */}
+        <div className="card-elevated rounded-3xl p-7 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <label className="text-white font-bold text-lg">Generated Summary</label>
               {summary && (
-                <button className="text-green-400 hover:text-blue-300 text-sm flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                <button 
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(summary);
+                      alert('✅ Summary copied to clipboard!');
+                    } catch {
+                      alert('Failed to copy. Please select and copy manually.');
+                    }
+                  }}
+                  className="text-green-400 hover:text-green-300 text-sm flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-green-500/10 transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
                   Copy
                 </button>
               )}
             </div>
 
-            <div className="w-full h-64 bg-black border border-green-500/30 rounded-lg p-4 overflow-y-auto">
+            <div className="w-full h-64 bg-[#0A0F0D] border border-green-500/30 rounded-2xl p-5 overflow-y-auto">
               {summary ? (
-                <p className="text-green-200 leading-relaxed">{summary}</p>
+                <p className="text-gray-200 leading-relaxed">{summary}</p>
               ) : (
                 <div className="h-full flex flex-col items-center justify-center text-center">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                    <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                  <div className="relative mb-5">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur opacity-30"></div>
+                    <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full flex items-center justify-center border border-blue-500/30">
+                      <svg className="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
                   </div>
-                  <p className="text-green-200/70 font-medium mb-2">
+                  <p className="text-white font-semibold mb-2">
                     Your summary will appear here
                   </p>
-                  <p className="text-green-300/50 text-sm max-w-xs">
-                    Enter your text and click "Summarize" to generate a summary.
+                  <p className="text-gray-400 text-sm max-w-xs">
+                    Enter your text and click "Generate Summary" to create a concise version.
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Summary Stats */}
+          {/* Enhanced Summary Stats */}
           {summary && (
-            <div className="bg-black rounded-lg p-4 border border-green-500/30">
+            <div className="card-glass rounded-2xl p-5 border border-green-500/30">
               <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-green-200/70 text-xs mb-1">Original</div>
-                  <div className="text-white font-semibold">{wordCount} words</div>
+                <div className="group">
+                  <div className="text-gray-400 text-xs mb-2 font-semibold uppercase tracking-wide">Original</div>
+                  <div className="text-white font-bold text-2xl group-hover:text-green-100 transition-colors">{wordCount}</div>
+                  <div className="text-gray-500 text-xs mt-1">words</div>
                 </div>
-                <div>
-                  <div className="text-green-200/70 text-xs mb-1">Summary</div>
-                  <div className="text-green-400 font-semibold">
-                    {summary.split(/\s+/).length} words
+                <div className="group border-x border-green-500/20">
+                  <div className="text-gray-400 text-xs mb-2 font-semibold uppercase tracking-wide">Summary</div>
+                  <div className="text-green-400 font-bold text-2xl group-hover:text-green-300 transition-colors">
+                    {summary.split(/\s+/).length}
                   </div>
+                  <div className="text-gray-500 text-xs mt-1">words</div>
                 </div>
-                <div>
-                  <div className="text-green-200/70 text-xs mb-1">Reduction</div>
-                  <div className="text-green-400 font-semibold">
+                <div className="group">
+                  <div className="text-gray-400 text-xs mb-2 font-semibold uppercase tracking-wide">Saved</div>
+                  <div className="text-blue-400 font-bold text-2xl group-hover:text-blue-300 transition-colors">
                     {Math.round((1 - summary.split(/\s+/).length / wordCount) * 100)}%
                   </div>
+                  <div className="text-gray-500 text-xs mt-1">reduction</div>
                 </div>
               </div>
             </div>
@@ -254,40 +285,49 @@ export default function SummarizerPanel() {
         </div>
       </div>
 
-      {/* Features Info */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gray-950 rounded-xl border border-green-500/20 p-6">
-          <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-            <svg className="w-7 h-7 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+      {/* Enhanced Features Info Section */}
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+        <div className="relative group card-glass rounded-2xl p-7 hover-lift border border-green-500/20">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+          <div className="relative">
+            <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="text-white font-bold text-lg mb-2 group-hover:text-gray-50 transition-colors">Lightning Fast</h3>
+            <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+              Get instant summaries powered by advanced AI technology in seconds
+            </p>
           </div>
-          <h3 className="text-white font-semibold mb-2">Lightning Fast</h3>
-          <p className="text-green-200/70 text-sm">
-            Get instant summaries powered by advanced AI technology
-          </p>
         </div>
 
-        <div className="bg-gray-950 rounded-xl border border-green-500/20 p-6">
-          <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-            <svg className="w-7 h-7 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <div className="relative group card-glass rounded-2xl p-7 hover-lift border border-green-500/20">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+          <div className="relative">
+            <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-white font-bold text-lg mb-2 group-hover:text-gray-50 transition-colors">Accurate Results</h3>
+            <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+              Capture key points and main ideas with precision and clarity
+            </p>
           </div>
-          <h3 className="text-white font-semibold mb-2">Accurate Results</h3>
-          <p className="text-green-200/70 text-sm">
-            Capture key points and main ideas with precision
-          </p>
         </div>
 
-        <div className="bg-gray-950 rounded-xl border border-green-500/20 p-6">
-          <div className="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center mb-4">
-            <span className="text-2xl">📚</span>
+        <div className="relative group card-glass rounded-2xl p-7 hover-lift border border-green-500/20">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+          <div className="relative">
+            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <span className="text-3xl">📚</span>
+            </div>
+            <h3 className="text-white font-bold text-lg mb-2 group-hover:text-gray-50 transition-colors">Multiple Formats</h3>
+            <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+              Support for text, PDFs, and various document types for flexibility
+            </p>
           </div>
-          <h3 className="text-white font-semibold mb-2">Multiple Formats</h3>
-          <p className="text-green-200/70 text-sm">
-            Support for text, PDFs, and various document types
-          </p>
         </div>
       </div>
     </div>
