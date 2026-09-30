@@ -1,0 +1,16 @@
+This is a test file for the upload functionality.
+
+Key Concepts:
+- File upload should work with .txt files
+- Content should be extracted and displayed
+- User should see the filename after upload
+
+Testing Notes:
+This file contains multiple lines of text to verify that the entire content is properly extracted and displayed in the application.
+
+The upload button should:
+1. Open a file picker
+2. Allow selection of .txt files
+3. Read the file content
+4. Pass the content to the parent component
+5. Display the filename in the UI

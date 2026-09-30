@@ -132,217 +132,283 @@ export default function DashboardHome() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-black dark:from-black dark:via-gray-950 dark:to-black light:from-white light:via-gray-50 light:to-white p-8">
-      {/* Welcome Header */}
-      <div className="mb-10">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20">
-              <span className="text-white font-bold text-xl">B</span>
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0F0D] via-[#0f1612] to-[#0A0F0D] p-8 animate-fade-in">
+      {/* Enhanced Welcome Header with Better Spacing */}
+      <div className="mb-12">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-5 animate-fade-in-up">
+            {/* Improved Avatar with Gradient Border */}
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-green-500 via-emerald-500 to-green-500 rounded-2xl blur opacity-40 group-hover:opacity-60 transition duration-300"></div>
+              <div className="relative w-16 h-16 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl flex items-center justify-center shadow-2xl ring-4 ring-[#0A0F0D]">
+                <span className="text-white font-bold text-2xl">B</span>
+              </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white dark:text-white light:text-gray-900">
-                Welcome back, Bina Ale! 👋
+              <h1 className="text-4xl font-bold text-white tracking-tight mb-1.5">
+                Welcome back, <span className="text-gradient-primary">Bina Ale</span>! 👋
               </h1>
-              <p className="text-green-200 dark:text-green-200 light:text-gray-600 text-sm mt-1">
-                Here is what's happening with your Study account today.
+              <p className="text-gray-400 text-base">
+                Here's what's happening with your study journey today
               </p>
             </div>
           </div>
-          <ThemeToggle />
+          <div className="animate-fade-in">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
 
-      {/* AI Tools Section */}
-      <section className="mb-10">
-        <div className="flex items-center gap-2 mb-5">
-          <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          <h2 className="text-xl font-bold text-white">Study AI Tools</h2>
+      {/* AI Tools Section - Enhanced Cards */}
+      <section className="mb-12 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-white">Study AI Tools</h2>
+          <div className="ml-auto">
+            <span className="text-sm text-gray-400 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+              {aiTools.length} tools available
+            </span>
+          </div>
         </div>
         
-        {/* Featured Tools - Full Width Row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          {aiTools.slice(0, 2).map((tool) => (
+        {/* Featured Tools - Enhanced Full Width Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {aiTools.slice(0, 2).map((tool, index) => (
             <button
               key={tool.id}
               onClick={() => handleToolClick(tool.id)}
-              className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 dark:from-gray-900/80 dark:to-black/80 light:from-white light:to-gray-50 backdrop-blur rounded-2xl p-5 border border-green-500/20 hover:border-green-500/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-green-500/10 text-left overflow-hidden"
+              className="group relative card-elevated rounded-3xl p-7 text-left overflow-hidden hover-lift transition-all duration-500"
+              style={{animationDelay: `${0.15 + index * 0.05}s`}}
             >
-              {/* Subtle gradient overlay on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-[0.08] transition-opacity duration-300 rounded-2xl`} />
+              {/* Animated Background Gradient */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-3xl`} />
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
+              
+              {/* Content */}
+              <div className="relative z-10">
+                {/* Icon and Badge Row */}
+                <div className="flex items-start justify-between mb-5">
+                  <div className={`w-14 h-14 bg-gradient-to-br ${tool.gradient} rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
+                    {getIcon(tool.iconType)}
+                  </div>
+                  {tool.badge && (
+                    <span className={`px-3 py-1.5 rounded-xl text-xs font-bold ${tool.badgeColor} border backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300`}>
+                      {tool.badge}
+                    </span>
+                  )}
+                </div>
+
+                {/* Title and Arrow */}
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <h3 className="text-white font-bold text-xl group-hover:text-gray-50 transition-colors duration-300">
+                    {tool.name}
+                  </h3>
+                  <svg 
+                    className="w-5 h-5 text-gray-500 group-hover:text-green-400 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 flex-shrink-0 mt-1" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor" 
+                    strokeWidth={2.5}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+
+                {/* Description */}
+                <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+                  {tool.description}
+                </p>
+              </div>
+
+              {/* Hover Border Effect */}
+              <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/0 group-hover:ring-green-500/30 transition-all duration-500" />
+            </button>
+          ))}
+        </div>
+
+        {/* Other Tools - Enhanced Regular Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {aiTools.slice(2).map((tool, index) => (
+            <button
+              key={tool.id}
+              onClick={() => handleToolClick(tool.id)}
+              className="group relative card-glass rounded-2xl p-6 text-left overflow-hidden hover-lift transition-all duration-500"
+              style={{animationDelay: `${0.2 + index * 0.05}s`}}
+            >
+              {/* Hover Gradient Effect */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl`} />
               
               {/* Content */}
               <div className="relative z-10">
                 {/* Icon and Badge */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="group-hover:scale-105 transition-transform duration-300">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${tool.gradient} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
                     {getIcon(tool.iconType)}
                   </div>
                   {tool.badge && (
-                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${tool.badgeColor} border`}>
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${tool.badgeColor} border backdrop-blur-sm group-hover:scale-105 transition-transform duration-300`}>
                       {tool.badge}
                     </span>
                   )}
                 </div>
 
                 {/* Title */}
-                <h3 className="text-white dark:text-white light:text-gray-900 font-semibold text-base mb-1.5 group-hover:text-gray-100 dark:group-hover:text-gray-100 light:group-hover:text-gray-700 transition-colors duration-300">
+                <h3 className="text-white font-bold text-base mb-2 group-hover:text-gray-50 transition-colors duration-300">
                   {tool.name}
                 </h3>
 
                 {/* Description */}
-                <p className="text-green-200/80 text-xs leading-relaxed group-hover:text-green-100 transition-colors duration-300">
+                <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
                   {tool.description}
                 </p>
               </div>
+
+              {/* Hover Border Effect */}
+              <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/0 group-hover:ring-green-500/30 transition-all duration-500" />
             </button>
           ))}
         </div>
+      </section>
 
-        {/* Other Tools - Regular Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {aiTools.slice(2).map((tool) => (
-            <button
-              key={tool.id}
-              onClick={() => handleToolClick(tool.id)}
-              className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 dark:from-gray-900/80 dark:to-black/80 light:from-white light:to-gray-50 backdrop-blur rounded-2xl p-5 border border-green-500/20 hover:border-green-500/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-green-500/10 text-left overflow-hidden"
-            >
-              {/* Subtle gradient overlay on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-[0.08] transition-opacity duration-300 rounded-2xl`} />
-              
-              {/* Content */}
-              <div className="relative z-10">
-                {/* Icon and Badge */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="group-hover:scale-105 transition-transform duration-300">
-                    {getIcon(tool.iconType)}
-                  </div>
-                  {tool.badge && (
-                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${tool.badgeColor} border`}>
-                      {tool.badge}
-                    </span>
-                  )}
+      {/* Enhanced Stats Grid with Better Visual Design */}
+      <section className="mb-12 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* AI Words Usage - Enhanced Card */}
+          <div className="relative group card-elevated rounded-2xl p-6 hover-lift">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-white dark:text-white light:text-gray-900 font-semibold text-base mb-1.5 group-hover:text-gray-100 dark:group-hover:text-gray-100 light:group-hover:text-gray-700 transition-colors duration-300">
-                  {tool.name}
-                </h3>
-
-                {/* Description */}
-                <p className="text-green-200/80 text-xs leading-relaxed group-hover:text-green-100 transition-colors duration-300">
-                  {tool.description}
-                </p>
+                <h3 className="text-white font-bold text-base">AI Words</h3>
               </div>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Stats Grid */}
-      <section className="mb-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Words Usage */}
-          <div className="bg-gradient-to-br from-gray-900/80 to-black/80 dark:from-gray-900/80 dark:to-black/80 light:from-white light:to-gray-50 backdrop-blur rounded-2xl p-5 border border-green-500/20">
-            <div className="flex items-center gap-2.5 mb-3">
-              <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-              <h3 className="text-white dark:text-white light:text-gray-900 font-semibold text-sm">AI Words</h3>
-            </div>
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-2xl font-bold text-white dark:text-white light:text-gray-900 mb-0.5">8</p>
-                <p className="text-green-200/70 dark:text-green-200/70 light:text-gray-600 text-xs">Remaining</p>
-              </div>
-              <div className="text-right">
-                <p className="text-green-300/50 dark:text-green-300/50 light:text-gray-400 text-xs line-through">245</p>
-                <p className="text-red-400 text-xs font-medium">Low balance</p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-3xl font-bold text-white mb-1">8</p>
+                  <p className="text-gray-400 text-sm">Remaining</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-gray-500 text-sm line-through mb-0.5">245</p>
+                  <div className="flex items-center gap-1.5 bg-red-500/20 px-2.5 py-1 rounded-lg border border-red-500/30">
+                    <svg className="w-3.5 h-3.5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-red-400 text-xs font-semibold">Low</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Activity */}
-          <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur rounded-2xl p-5 border border-green-500/20">
-            <div className="flex items-center gap-2.5 mb-3">
-              <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <h3 className="text-white font-semibold text-sm">Activity</h3>
-            </div>
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-2xl font-bold text-white mb-0.5">62</p>
-                <p className="text-green-200/70 text-xs">Minutes today</p>
+          {/* Activity - Enhanced Card */}
+          <div className="relative group card-elevated rounded-2xl p-6 hover-lift">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-white font-bold text-base">Activity</h3>
               </div>
-              <div className="text-right">
-                <p className="text-green-400 text-xs font-medium">+18%</p>
-                <p className="text-green-300/50 text-xs">vs yesterday</p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-3xl font-bold text-white mb-1">62</p>
+                  <p className="text-gray-400 text-sm">Minutes today</p>
+                </div>
+                <div className="text-right">
+                  <div className="flex items-center gap-1.5 bg-green-500/20 px-2.5 py-1 rounded-lg border border-green-500/30 mb-0.5">
+                    <svg className="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    <span className="text-green-400 text-xs font-semibold">+18%</span>
+                  </div>
+                  <p className="text-gray-500 text-xs">vs yesterday</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Tools Used */}
-          <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur rounded-2xl p-5 border border-green-500/20">
-            <div className="flex items-center gap-2.5 mb-3">
-              <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <h3 className="text-white font-semibold text-sm">Tools Used</h3>
-            </div>
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-2xl font-bold text-white mb-0.5">5</p>
-                <p className="text-green-200/70 text-xs">This week</p>
+          {/* Tools Used - Enhanced Card */}
+          <div className="relative group card-elevated rounded-2xl p-6 hover-lift">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <h3 className="text-white font-bold text-base">Tools Used</h3>
               </div>
-              <div className="text-right">
-                <p className="text-green-400 text-xs font-medium">Song It</p>
-                <p className="text-green-300/50 text-xs">Most used</p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-3xl font-bold text-white mb-1">5</p>
+                  <p className="text-gray-400 text-sm">This week</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-purple-400 text-sm font-semibold mb-0.5">Song It</p>
+                  <p className="text-gray-500 text-xs">Most used</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quick Actions */}
-      <section>
-        <div className="flex items-center gap-2 mb-5">
-          <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          <h2 className="text-xl font-bold text-white">Quick Actions</h2>
+      {/* Enhanced Quick Actions */}
+      <section className="animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-white">Quick Actions</h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button className="group bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur rounded-2xl p-5 border border-green-500/20 hover:border-green-500/40 transition-all duration-300 hover:scale-[1.01] text-left">
-            <div className="flex items-center gap-3.5">
-              <svg className="w-6 h-6 text-green-400 group-hover:text-green-300 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <div className="flex-1">
-                <h3 className="text-white font-semibold text-sm mb-0.5">Continue Last Session</h3>
-                <p className="text-green-200/70 text-xs">Resume Song It from 2 hours ago</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <button className="group relative card-elevated rounded-2xl p-6 text-left hover-lift">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+            <div className="relative flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              <svg className="w-4 h-4 text-green-300/50 group-hover:text-green-400 transform group-hover:translate-x-0.5 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <div className="flex-1 min-w-0">
+                <h3 className="text-white font-bold text-base mb-1 group-hover:text-gray-50 transition-colors">Continue Last Session</h3>
+                <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">Resume Song It from 2 hours ago</p>
+              </div>
+              <svg className="w-5 h-5 text-gray-500 group-hover:text-green-400 transform group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </div>
           </button>
 
-          <button className="group bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur rounded-2xl p-5 border border-green-500/20 hover:border-green-500/40 transition-all duration-300 hover:scale-[1.01] text-left">
-            <div className="flex items-center gap-3.5">
-              <svg className="w-6 h-6 text-green-400 group-hover:text-green-300 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <div className="flex-1">
-                <h3 className="text-white font-semibold text-sm mb-0.5">View History</h3>
-                <p className="text-green-200/70 text-xs">Access your past work and study sessions</p>
+          <button className="group relative card-elevated rounded-2xl p-6 text-left hover-lift">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
+            <div className="relative flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              <svg className="w-4 h-4 text-green-300/50 group-hover:text-green-400 transform group-hover:translate-x-0.5 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <div className="flex-1 min-w-0">
+                <h3 className="text-white font-bold text-base mb-1 group-hover:text-gray-50 transition-colors">View History</h3>
+                <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">Access your past work and study sessions</p>
+              </div>
+              <svg className="w-5 h-5 text-gray-500 group-hover:text-blue-400 transform group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </div>
           </button>

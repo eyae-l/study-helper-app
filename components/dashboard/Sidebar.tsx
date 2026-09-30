@@ -108,94 +108,118 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
   ];
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-black via-gray-950 to-black dark:from-black dark:via-gray-950 dark:to-black light:from-white light:via-gray-50 light:to-white border-r border-green-500/20 flex flex-col">
-      {/* Logo */}
+    <aside className="w-64 bg-gradient-to-b from-[#0A0F0D] via-[#0f1612] to-[#0A0F0D] border-r border-green-500/20 flex flex-col shadow-2xl">
+      {/* Enhanced Logo Section */}
       <div className="p-6 border-b border-green-500/20">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-green-700 rounded-lg flex items-center justify-center shadow-lg shadow-green-500/20">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+            <div className="relative w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center shadow-xl ring-2 ring-[#0A0F0D]">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
           </div>
-          <span className="text-white font-semibold text-lg">Study Healper</span>
+          <span className="text-white font-bold text-lg tracking-tight group-hover:text-green-100 transition-colors">Study Healper</span>
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-6">
+      {/* Enhanced Navigation */}
+      <nav className="flex-1 overflow-y-auto py-6 px-3">
         {/* Main Nav */}
-        <div className="px-4 mb-6">
+        <div className="mb-8">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 mb-1 ${
                 activeTab === item.id
-                  ? "bg-green-500/30 text-green-300 border border-green-500/40"
-                  : "text-green-200/70 hover:bg-green-500/10 hover:text-white"
+                  ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border border-green-500/40 shadow-lg shadow-green-500/20 scale-[1.02]"
+                  : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10"
               }`}
             >
-              {item.icon}
-              <span className="font-medium">{item.label}</span>
+              <div className={`${activeTab === item.id ? 'scale-110' : ''} transition-transform duration-300`}>
+                {item.icon}
+              </div>
+              <span className="font-semibold text-sm">{item.label}</span>
+              {activeTab === item.id && (
+                <div className="ml-auto w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+              )}
             </button>
           ))}
         </div>
 
-        {/* AI Tools */}
-        <div className="px-4 mb-6">
-          <h3 className="text-green-300/50 text-xs uppercase tracking-wider mb-3 px-4">
+        {/* AI Tools Section */}
+        <div className="mb-8">
+          <h3 className="text-green-400/60 text-xs uppercase tracking-wider font-bold mb-3 px-4 flex items-center gap-2">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
             Study AI Tools
           </h3>
           {aiTools.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 mb-1 ${
                 activeTab === item.id
-                  ? "bg-blue-600/20 text-blue-400"
-                  : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
+                  ? "bg-gradient-to-r from-blue-600/20 to-cyan-600/20 text-blue-300 border border-blue-500/40 shadow-lg shadow-blue-500/10"
+                  : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10"
               }`}
             >
-              {item.icon}
+              <div className={`${activeTab === item.id ? 'scale-110' : ''} transition-transform duration-300`}>
+                {item.icon}
+              </div>
               <span className="text-sm font-medium">{item.label}</span>
             </button>
           ))}
         </div>
 
-        {/* Account */}
-        <div className="px-4">
-          <h3 className="text-green-300/50 text-xs uppercase tracking-wider mb-3 px-4">
+        {/* Account Section */}
+        <div>
+          <h3 className="text-green-400/60 text-xs uppercase tracking-wider font-bold mb-3 px-4 flex items-center gap-2">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
             Account
           </h3>
           {accountItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 mb-1 ${
                 activeTab === item.id
-                  ? "bg-blue-600/20 text-blue-400"
-                  : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
+                  ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-purple-300 border border-purple-500/40 shadow-lg shadow-purple-500/10"
+                  : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10"
               }`}
             >
-              {item.icon}
+              <div className={`${activeTab === item.id ? 'scale-110' : ''} transition-transform duration-300`}>
+                {item.icon}
+              </div>
               <span className="text-sm font-medium">{item.label}</span>
             </button>
           ))}
         </div>
       </nav>
 
-      {/* User Profile */}
-      <div className="p-4 border-t border-gray-800">
-        <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
-            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
+      {/* Enhanced User Profile */}
+      <div className="p-4 border-t border-green-500/20">
+        <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 group border border-transparent hover:border-white/10">
+          <div className="relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+            <div className="relative w-11 h-11 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-lg ring-2 ring-[#0A0F0D]">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
           </div>
-          <div className="flex-1 text-left">
-            <div className="text-white text-sm font-medium">Bima Adi</div>
-            <div className="text-gray-400 text-xs">bima.adi@gmail.com</div>
+          <div className="flex-1 text-left min-w-0">
+            <div className="text-white text-sm font-semibold truncate group-hover:text-green-100 transition-colors">Bima Adi</div>
+            <div className="text-gray-400 text-xs truncate">bima.adi@gmail.com</div>
           </div>
+          <svg className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          </svg>
         </button>
       </div>
     </aside>
